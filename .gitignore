@@ -1,28 +1,55 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+// ConsoleApplication1.cpp: 主要專案檔。
 
-# Precompiled Headers
-*.gch
-*.pch
+#include "stdafx.h"
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+using namespace System;
 
-# Fortran module files
-*.mod
+#include<iostream>
+#include<fstream>
+#include <cstdlib>
+using namespace std;
+#define SIZE 100
+char line[SIZE];
+int num[100], c = 0, big = 0;
+int main(){
+	char filename[] = "homework1test.txt";
+	fstream fp;
+	fp.open(filename, ios::in);//(開啟/讀取)檔案
+	if (!fp){//如果開啟檔案失敗，fp為0；成功，fp為非0
+		cout << "Fail to open file: " << filename << endl;
+	}
+	while (fp.getline(line, sizeof(line), ',')) //把數字存入陣列 
+	{
+		//cout<<line<<endl<<endl;
+		num[c] = atoi(line);//轉數字 #include <cstdlib>
+		c += 1;
+	}
+	for (int count1 = 0; count1 <= c - 2; count1++)//做排序 
+	{
+		for (int count2 = 0; count2 <= c - 1; count2++)
+		{
+			if (num[count2 - 1] > num[count2])
+			{
+				big = num[count2 - 1];
+				num[count2 - 1] = num[count2];
+				num[count2] = big;
+			}
+		}
+	}
+	fp.close();//關閉檔案
+	fp.open(filename, ios::out);//(開啟/寫入)檔案
+	for (int count = 0; count <= c - 1; count++)
+	{
+		if (count == c - 2)
+		{
+			fp << num[count];
+			break;
+		}
+		fp << num[count] << ",";//寫入字串
+		//cout<<num[count]<<endl;
+	}
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+	fp.close();//關閉檔案
+	system("pause");
+	return EXIT_SUCCESS;
+}
